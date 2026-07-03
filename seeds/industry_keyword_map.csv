@@ -1,0 +1,17 @@
+keyword,category,match_field
+data engineer,Data Engineering,title
+data analyst,Data Analytics,title
+data scientist,Data Science,title
+machine learning,ML/AI,title
+ai engineer,ML/AI,title
+business intelligence,BI,title
+software engineer,Software,title
+backend,Software,title
+devops,DevOps,title
+python,Programming,tags
+sql,Database,tags
+spark,Big Data,tags
+hadoop,Big Data,tags
+dữ liệu,Data,title_vi
+kỹ sư,Engineering,title_vi
+phân tích,Analytics,title_vi
