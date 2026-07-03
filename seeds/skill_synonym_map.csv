@@ -1,0 +1,18 @@
+raw_name,canonical_name
+pyspark,Apache Spark
+spark,Apache Spark
+apache spark,Apache Spark
+gbq,BigQuery
+google bigquery,BigQuery
+k8s,Kubernetes
+aws s3,AWS
+aws lambda,AWS
+aws glue,AWS
+google cloud,GCP
+gcloud,GCP
+azure synapse,Azure
+microsoft azure,Azure
+postgres,PostgreSQL
+pg,PostgreSQL
+powerbi,Power BI
+ms power bi,Power BI
