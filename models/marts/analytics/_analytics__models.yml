@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: agg_skill_demand_monthly
+    description: "Số lượng tin tuyển dụng yêu cầu mỗi kỹ năng theo tháng"
+    columns:
+      - name: skill_key
+        tests:
+          - not_null
+
+  - name: agg_role_demand_monthly
+    description: "Xu hướng nhu cầu tuyển dụng theo vị trí công việc theo tháng"
+    columns:
+      - name: core_role
+        tests:
+          - not_null
+
+  - name: agg_salary_benchmark
+    description: "Percentile lương theo vị trí và cấp bậc"
+    columns:
+      - name: core_role
+        tests:
+          - not_null
+
+  - name: agg_location_distribution
+    description: "Phân bố nhu cầu tuyển dụng theo khu vực địa lý"
+
+  - name: agg_company_competitiveness
+    description: "Chỉ số cạnh tranh thị trường theo doanh nghiệp"
+    columns:
+      - name: company_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_key
+
+  - name: agg_role_skill_matrix
+    description: "Mối quan hệ giữa nghề nghiệp và kỹ năng — top skill theo từng vị trí"
+    columns:
+      - name: core_role
+        tests:
+          - not_null
+      - name: skill_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_skill')
+                field: skill_key
+
+  - name: agg_level_distribution
+    description: "Phân bố cấp bậc theo từng nghề nghiệp"
+    columns:
+      - name: core_role
+        tests:
+          - not_null
+      - name: job_level
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Intern', 'Fresher', 'Junior', 'Middle', 'Senior', 'Manager/Lead', 'Unspecified']
+
+  - name: agg_company_by_role
+    description: "Công ty tuyển dụng nhiều nhất theo từng nghề nghiệp"
+    columns:
+      - name: company_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_key
+
+  - name: agg_location_by_role
+    description: "Khu vực tuyển dụng theo từng nghề nghiệp"
+    columns:
+      - name: core_role
+        tests:
+          - not_null
