@@ -1,4 +1,5 @@
 {{ config(severity = 'warn') }}
+
 select
     source_platform,
     count(*) as total_jobs,
