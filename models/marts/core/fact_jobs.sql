@@ -14,16 +14,16 @@ final as (
         -- Foreign keys trỏ tới các bảng dim
         to_hex(md5(b.company_name_clean))                       as company_key,
         to_hex(md5(b.location_clean))                           as location_key,
-        to_hex(md5(cast(b.posted_date as string)))              as date_key,
+        to_hex(md5(cast(b.posted_at as string)))                as date_key,
 
         -- Thông tin công việc
-        b.job_title_raw,
+        b.title                                                 as job_title_raw, -- 👈 Sửa từ job_title_raw thành title
         b.job_title_clean,
         b.job_level,
         b.core_role,
 
         -- Lương
-        b.salary_raw,
+        b.salary                                                as salary_raw,    -- 👈 Sửa từ salary_raw thành salary
         b.salary_min_vnd,
         b.salary_max_vnd,
         case
@@ -35,13 +35,13 @@ final as (
         -- Metadata
         b.source_platform,
         b.url,
-        b.posted_date,
-        b._collected_date,
-        b._loaded_at
+        b.posted_at,                                            -- 👈 Sửa thành posted_at
+        cast(null as DATE)                                      as _collected_date, -- Giữ tạm để không vỡ cấu trúc của bạn
+        current_timestamp()                                     as _loaded_at
 
     from base b
-    -- Chỉ giữ job có date_key hợp lệ (posted_date không null)
-    where b.posted_date is not null
+    -- Chỉ giữ job có date_key hợp lệ (posted_at không null)
+    where b.posted_at is not null
 )
 
 select * from final

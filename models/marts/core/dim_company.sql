@@ -15,4 +15,4 @@ select
     to_hex(md5(company_name_clean))     as company_key,
     company_name_clean                  as company_name
 
-from base
+from base 
