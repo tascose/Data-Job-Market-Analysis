@@ -19,7 +19,9 @@ renamed as (
         nullif(trim(title), '')       as job_title_raw,
         nullif(trim(company), '')     as company_name_raw,
         nullif(trim(location), '')    as location_raw,
-        cast(posted_at as string)     as posted_date_raw,
+
+        -- posted_at có thể là "N/A" hoặc rỗng → chuẩn hóa về NULL trước khi lưu string
+        nullif(trim(cast(posted_at as string)), 'N/A') as posted_date_raw,
 
         -- itviec KHÔNG có salary → đặt NULL để khớp schema với 2 bảng kia
         cast(null as string)          as salary_raw,
@@ -46,13 +48,33 @@ renamed as (
 
 ),
 
-final as (
+filtered as (
 
     select *
     from renamed
     where job_title_raw is not null
       and company_name_raw is not null
       and url is not null
+
+),
+
+dedup as (
+
+    select *,
+        row_number() over (
+            partition by job_id
+            order by _loaded_at desc
+        ) as rn
+
+    from filtered
+
+),
+
+final as (
+
+    select * except(rn)
+    from dedup
+    where rn = 1
 
 )
 
