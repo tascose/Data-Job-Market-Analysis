@@ -1,22 +1,19 @@
 {{ config(materialized='view', schema='intermediate') }}
 
 with base as (
-    select * from {{ ref('int_dates_normalized') }}
+    select * from {{ ref('int_role_classified') }}
 ),
 
 cleaned as (
     select
         *,
-        trim(lower(salary)) as salary_clean 
+        trim(lower(salary)) as salary_clean
     from base
 ),
 
 extracted as (
     select
-        -- Bỏ EXCEPT(salary_lower) đi vì nó không tồn tại trong cleaned
         *,
-        
-        -- Sửa các biến bên dưới từ salary_lower thành salary_clean để tính toán chính xác
         case
             when salary_clean = '' then null
             when regexp_contains(salary_clean, r'thương lượng|negotiate|negotiable|cạnh tranh|competitive|thoả thuận')

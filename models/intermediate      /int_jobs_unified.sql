@@ -1,38 +1,38 @@
 {{ config(materialized='view', schema='intermediate') }}
 
 with itviec as (
-    select 
+    select
         job_id,
         job_title_raw as title,
         company_name_raw as company,
         location_raw as location,
-        cast(null as STRING) as salary, 
-        case 
+        cast(null as STRING) as salary,
+        case
             when posted_date_raw like '%ago%' or posted_date_raw like '%trước%' then current_date()
             else safe_cast(posted_date_raw as DATE)
         end as posted_at,
         cast(null as STRING) as tags,
         url,
-        'itviec' as source_platform -- Điền cứng trực tiếp ở đây
+        'itviec' as source_platform
     from {{ ref('stg_itviec__jobs') }}
 ),
 
 vietnamworks as (
-    select 
+    select
         job_id,
         job_title_raw as title,
         company_name_raw as company,
         location_raw as location,
         salary_raw as salary,
-        safe_cast(posted_date_raw as DATE) as posted_at, 
+        safe_cast(posted_date_raw as DATE) as posted_at,
         raw_skill_tags as tags,
         url,
-        'vietnamworks' as source_platform -- Điền cứng trực tiếp ở đây
+        'vietnamworks' as source_platform
     from {{ ref('stg_vietnamworks__jobs') }}
 ),
 
 careerviet as (
-    select 
+    select
         job_id,
         job_title_raw as title,
         company_name_raw as company,
@@ -45,12 +45,11 @@ careerviet as (
         ) as posted_at,
         raw_skill_tags as tags,
         url,
-        'careerviet' as source_platform -- Điền cứng trực tiếp ở đây
+        'careerviet' as source_platform
     from {{ ref('stg_careerviet__jobs') }}
 ),
 
 unioned as (
-    -- Liệt kê tường minh chính xác 9 cột từ trái qua phải ở cả 3 nhánh
     select job_id, title, company, location, salary, posted_at, tags, url, source_platform from itviec
     union all
     select job_id, title, company, location, salary, posted_at, tags, url, source_platform from vietnamworks

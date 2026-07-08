@@ -7,7 +7,6 @@ with base as (
 cleaned as (
     select
         *,
-        -- SỬA TẠI ĐÂY: Đổi job_title_raw thành title để khớp với tầng dữ liệu trước
         trim(lower(title)) as job_title_clean
     from base
 ),
