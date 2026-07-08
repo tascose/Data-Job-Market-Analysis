@@ -7,7 +7,8 @@ with base as (
 step1_lower as (
     select
         *,
-        lower(trim(coalesce(company_name_raw, ''))) as c
+        -- SỬA TẠI ĐÂY: Đổi company_name_raw thành company
+        lower(trim(coalesce(company, ''))) as c
     from base
 ),
 
@@ -47,7 +48,7 @@ step5_normalize_spaces as (
 
 final as (
     select
-        -- Thêm company_name_clean vào EXCEPT để không bị trùng tên cột ở dưới
+        -- Loại bỏ các cột nháp tạm thời và cột company_name_clean cũ để tránh trùng lặp trùng tên
         * except (c, c2, c3, c4, company_name_clean),
         case
             when company_name_clean = '' or company_name_clean is null then 'Unknown'
