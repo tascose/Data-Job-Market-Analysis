@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: dim_company
+    description: "Bảng Dimension công ty tuyển dụng"
+    columns:
+      - name: company_key
+        tests: [not_null, unique]
+
+  - name: dim_skill
+    description: "Bảng Dimension kỹ năng"
+    columns:
+      - name: skill_key
+        tests: [not_null, unique]
+
+  - name: dim_location
+    description: "Bảng Dimension địa điểm làm việc"
+    columns:
+      - name: location_key
+        tests: [not_null, unique]
+
+  - name: dim_date
+    description: "Bảng Dimension thời gian"
+    columns:
+      - name: date_key
+        tests: [not_null, unique]
+
+  - name: fact_jobs
+    description: "Bảng Fact trung tâm, mỗi dòng là 1 tin tuyển dụng"
+    columns:
+      - name: job_id
+        tests: [not_null, unique]
+      - name: company_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_key
+      - name: location_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_location')
+                field: location_key
+      - name: date_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+
+  - name: fact_job_skills
+    description: "Bảng Fact bắc cầu giữa Job và Skill"
+    columns:
+      - name: job_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('fact_jobs')
+                field: job_id
+      - name: skill_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_skill')
+                field: skill_key
