@@ -7,7 +7,7 @@ with itviec as (
         company_name_raw as company,
         location_raw as location,
         salary_raw as salary,
-        posted_date_raw as posted_at, 
+        cast(posted_date_raw as STRING) as posted_at, -- 👈 Ép về STRING để đồng bộ
         raw_skill_tags as tags,
         url,
         full_text,
@@ -24,7 +24,7 @@ vietnamworks as (
         company_name_raw as company,
         location_raw as location,
         salary_raw as salary,
-        posted_date_raw as posted_at, 
+        cast(posted_date_raw as STRING) as posted_at, -- 👈 Ép về STRING để đồng bộ
         raw_skill_tags as tags,
         url,
         full_text,
@@ -41,7 +41,7 @@ careerviet as (
         company_name_raw as company,
         location_raw as location,
         salary_raw as salary,
-        posted_date_raw as posted_at, 
+        cast(posted_date_raw as STRING) as posted_at, -- 👈 Ép về STRING để đồng bộ
         raw_skill_tags as tags,
         url,
         full_text,
