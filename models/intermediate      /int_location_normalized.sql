@@ -8,15 +8,16 @@ normalized as (
     select
         *,
         case
-            when regexp_contains(lower(coalesce(location_raw,'')), r'hà\s*nội|ha\s*noi|hanoi')
+            -- SỬA TẠI ĐÂY: Đổi location_raw thành location
+            when regexp_contains(lower(coalesce(location,'')), r'hà\s*nội|ha\s*noi|hanoi')
                 then 'Hà Nội'
-            when regexp_contains(lower(coalesce(location_raw,'')), r'hồ\s*chí\s*minh|ho\s*chi\s*minh|\bhcm\b|tp\.?\s*hcm|sài\s*gòn|saigon|tphcm')
+            when regexp_contains(lower(coalesce(location,'')), r'hồ\s*chí\s*minh|ho\s*chi\s*minh|\bhcm\b|tp\.?\s*hcm|sài\s*gòn|saigon|tphcm')
                 then 'Hồ Chí Minh'
-            when regexp_contains(lower(coalesce(location_raw,'')), r'đà\s*nẵng|da\s*nẵng|da\s*nang|danang|đanẵng')
+            when regexp_contains(lower(coalesce(location,'')), r'đà\s*nẵng|da\s*nẵng|da\s*nang|danang|đanẵng')
                 then 'Đà Nẵng'
-            when regexp_contains(lower(coalesce(location_raw,'')), r'\bremote\b|từ\s*xa|work\s*from\s*home|\bwfh\b|toàn\s*quốc|nationwide')
+            when regexp_contains(lower(coalesce(location,'')), r'\bremote\b|từ\s*xa|work\s*from\s*home|\bwfh\b|toàn\s*quốc|nationwide')
                 then 'Remote'
-            when location_raw is null or trim(location_raw) = ''
+            when location is null or trim(location) = ''
                 then 'Không xác định'
             else 'Khác' -- Toàn bộ các tỉnh thành còn lại (Bình Dương, Đồng Nai,...) sẽ tự động rơi vào đây
         end as location_clean
