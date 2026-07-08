@@ -17,8 +17,11 @@ renamed as (
         nullif(trim(title), '')       as job_title_raw,
         nullif(trim(company), '')     as company_name_raw,
         nullif(trim(location), '')    as location_raw,
-        -- vietnamworks: posted_at kiểu DATE → cast sang string
-        cast(posted_at as string)     as posted_date_raw,
+
+        -- posted_at ở nguồn là STRING (vd "11/06/2026" hoặc "N/A")
+        -- parse an toàn: sai định dạng hoặc "N/A" đều ra NULL thay vì làm vỡ query
+        safe.parse_date('%d/%m/%Y', nullif(trim(cast(posted_at as string)), 'N/A')) as posted_date_raw,
+
         nullif(trim(salary), '')      as salary_raw,
 
         concat(
@@ -29,7 +32,6 @@ renamed as (
         nullif(trim(tags), '')        as raw_skill_tags,
         url,
 
-        -- Vietnamworks không có mode/benefits/top_reasons → NULL
         cast(null as string)          as job_mode,
         cast(null as string)          as benefits,
         cast(null as string)          as top_reasons,
@@ -42,13 +44,33 @@ renamed as (
 
 ),
 
-final as (
+filtered as (
 
     select *
     from renamed
     where job_title_raw is not null
       and company_name_raw is not null
       and url is not null
+
+),
+
+dedup as (
+
+    select *,
+        row_number() over (
+            partition by job_id
+            order by _loaded_at desc
+        ) as rn
+
+    from filtered
+
+),
+
+final as (
+
+    select * except(rn)
+    from dedup
+    where rn = 1
 
 )
 
