@@ -8,7 +8,6 @@ normalized as (
     select
         *,
         case
-            -- SỬA TẠI ĐÂY: Đổi location_raw thành location
             when regexp_contains(lower(coalesce(location,'')), r'hà\s*nội|ha\s*noi|hanoi')
                 then 'Hà Nội'
             when regexp_contains(lower(coalesce(location,'')), r'hồ\s*chí\s*minh|ho\s*chi\s*minh|\bhcm\b|tp\.?\s*hcm|sài\s*gòn|saigon|tphcm')
@@ -19,7 +18,7 @@ normalized as (
                 then 'Remote'
             when location is null or trim(location) = ''
                 then 'Không xác định'
-            else 'Khác' -- Toàn bộ các tỉnh thành còn lại (Bình Dương, Đồng Nai,...) sẽ tự động rơi vào đây
+            else 'Khác'
         end as location_clean
     from base
 ),

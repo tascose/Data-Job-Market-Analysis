@@ -1,13 +1,12 @@
 {{ config(materialized='view', schema='intermediate') }}
 
 with base as (
-    select * from {{ ref('int_location_normalized') }} 
+    select * from {{ ref('int_location_normalized') }}
 ),
 
 step1_lower as (
     select
         *,
-        -- SỬA TẠI ĐÂY: Đổi company_name_raw thành company
         lower(trim(coalesce(company, ''))) as c
     from base
 ),
@@ -33,7 +32,7 @@ step4_clean_punctuation as (
     select
         *,
         trim(regexp_replace(
-            regexp_replace(c3, r'[,\.\-–—&]+\s*$', ''), 
+            regexp_replace(c3, r'[,\.\-–—&]+\s*$', ''),
             r'^\s*[,\.\-–—&]+', ''                        
         )) as c4
     from step3_remove_brackets
@@ -48,7 +47,6 @@ step5_normalize_spaces as (
 
 final as (
     select
-        -- Loại bỏ các cột nháp tạm thời và cột company_name_clean cũ để tránh trùng lặp trùng tên
         * except (c, c2, c3, c4, company_name_clean),
         case
             when company_name_clean = '' or company_name_clean is null then 'Unknown'

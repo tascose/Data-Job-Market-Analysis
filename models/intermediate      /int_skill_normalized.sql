@@ -35,4 +35,4 @@ normalized as (
 
 select distinct job_id, skill, category
 from normalized
-where skill is not null and trim(skill) != ''
+where skill is not null and trim(skill) != '' 
