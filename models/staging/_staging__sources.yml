@@ -6,8 +6,5 @@ sources:
     schema: raw_jobdata
     tables:
       - name: itviec_raw
-        description: "External table trỏ tới dữ liệu thô ITviec trên GCS"
       - name: vietnamworks_raw
-        description: "External table trỏ tới dữ liệu thô VietnamWorks trên GCS"
       - name: careerviet_raw
-        description: "External table trỏ tới dữ liệu thô CareerViet trên GCS"

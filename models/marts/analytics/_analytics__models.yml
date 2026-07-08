@@ -61,7 +61,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['Intern', 'Fresher', 'Junior', 'Middle', 'Senior', 'Manager/Lead', 'Unspecified']
+                values: ['Intern', 'Fresher', 'Junior', 'Middle', 'Senior', 'Manager/Lead', 'Null']
 
   - name: agg_company_by_role
     description: "Công ty tuyển dụng nhiều nhất theo từng nghề nghiệp"

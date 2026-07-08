@@ -2,31 +2,27 @@ version: 2
 
 models:
   - name: stg_itviec__jobs
-    description: "Dữ liệu ITviec sau khi chuẩn hóa"
+    description: "Dữ liệu ITviec sau chuẩn hóa Staging"
     columns:
       - name: job_id
-        tests:
-          - not_null
-          - unique
+        tests: [not_null, unique]
       - name: job_title_raw
-        tests:
-          - not_null
-      - name: source_platform
-        tests:
-          - not_null
+        tests: [not_null]
+      - name: company_name_raw
+        tests: [not_null]
 
   - name: stg_vietnamworks__jobs
-    description: "Dữ liệu VietnamWorks sau khi chuẩn hóa"
+    description: "Dữ liệu VietnamWorks sau chuẩn hóa Staging"
     columns:
       - name: job_id
-        tests:
-          - not_null
-          - unique
+        tests: [not_null, unique]
+      - name: job_title_raw
+        tests: [not_null]
 
   - name: stg_careerviet__jobs
-    description: "Dữ liệu CareerViet sau khi chuẩn hóa"
+    description: "Dữ liệu CareerViet sau chuẩn hóa Staging"
     columns:
       - name: job_id
-        tests:
-          - not_null
-          - unique
+        tests: [not_null, unique]
+      - name: job_title_raw
+        tests: [not_null]
