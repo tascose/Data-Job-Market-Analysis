@@ -1,22 +1,22 @@
 {{ config(materialized='table', schema='marts') }}
 
 with base as (
-    select distinct posted_date
+    select distinct posted_at
     from {{ ref('int_jobs_deduplicated') }}
-    where posted_date is not null
+    where posted_at is not null
 )
 
 select
-    to_hex(md5(cast(posted_date as string)))    as date_key,
-    posted_date,
-    extract(year from posted_date)              as year,
-    extract(quarter from posted_date)           as quarter,
-    extract(month from posted_date)             as month,
-    extract(day from posted_date)               as day,        -- ← thêm mới
-    extract(isoweek from posted_date)           as week,
-    extract(dayofweek from posted_date)         as day_of_week,
-    format_date('%A', posted_date)              as day_name,   -- ← thêm tên thứ
-    format_date('%B', posted_date)              as month_name,
-    format_date('%Y-%m', posted_date)           as year_month
+    to_hex(md5(cast(posted_at as string)))      as date_key,
+    posted_at,
+    extract(year from posted_at)                as year,
+    extract(quarter from posted_at)             as quarter,
+    extract(month from posted_at)               as month,
+    extract(day from posted_at)                 as day,
+    extract(isoweek from posted_at)             as week,
+    extract(dayofweek from posted_at)           as day_of_week,
+    format_date('%A', posted_at)                as day_name,
+    format_date('%B', posted_at)                as month_name,
+    format_date('%Y-%m', posted_at)             as year_month
 
 from base
