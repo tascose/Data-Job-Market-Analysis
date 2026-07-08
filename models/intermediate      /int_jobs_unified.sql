@@ -41,14 +41,14 @@ careerviet as (
         location_raw as location,
         salary_raw as salary,
         
-        -- XỬ LÝ NGÀY THÁNG ĐA ĐỊNH DẠNG CHO CAREERVIET:
+        -- XỬ LÝ NGÀY THÁNG ĐA ĐỊNH DẠNG (ĐÃ SỬA CÚ PHÁP SAFE.)
         coalesce(
-            -- Trường hợp 1: Nếu chuỗi đã là YYYY-MM-DD chuẩn ISO hoặc YYYY/MM/DD
+            -- Trường hợp 1: Nếu chuỗi đã chuẩn ISO YYYY-MM-DD
             safe_cast(posted_date_raw as DATE),
             -- Trường hợp 2: Nếu chuỗi có dạng DD-MM-YYYY (gạch ngang)
-            safe(parse_date('%d-%m-%Y', posted_date_raw)),
+            safe.parse_date('%d-%m-%Y', posted_date_raw),
             -- Trường hợp 3: Nếu chuỗi có dạng DD/MM/YYYY (gạch chéo)
-            safe(parse_date('%d/%m/%Y', posted_date_raw))
+            safe.parse_date('%d/%m/%Y', posted_date_raw)
         ) as posted_at,
         
         raw_skill_tags as tags,
