@@ -7,7 +7,8 @@ with base as (
 )
 
 select
-    to_hex(md5(cast(posted_at as string)))      as date_key,
+    -- Dùng format_date định dạng cố định YYYY-MM-DD để băm MD5 không bao giờ bị lệch múi giờ
+    to_hex(md5(format_date('%Y-%m-%d', posted_at))) as date_key,
     posted_at,
     extract(year from posted_at)                as year,
     extract(quarter from posted_at)             as quarter,

@@ -14,8 +14,8 @@ final as (
         -- Foreign keys trỏ tới các bảng dim
         to_hex(md5(b.company_name_clean))                       as company_key,
         to_hex(md5(b.location_clean))                           as location_key,
-        to_hex(md5(cast(b.posted_at as string)))                as date_key,
-
+        -- Sửa dòng date_key trong fact_jobs.sql thành dòng này:
+to_hex(md5(format_date('%Y-%m-%d', b.posted_at)))               as date_key,
         -- Thông tin công việc
         b.title                                                 as job_title_raw, -- 👈 Sửa từ job_title_raw thành title
         b.job_title_clean,

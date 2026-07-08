@@ -53,7 +53,8 @@ with skill_whitelist as (
 jobs as (
     select
         job_id,
-        lower(coalesce(title,'')) as full_text,
+        -- Kết hợp cả full_text (JD gốc) lẫn title để không bỏ sót bất cứ vị trí nào
+        lower(concat(coalesce(title,''), ' ', coalesce(full_text,''))) as search_text, 
         lower(coalesce(tags,'')) as raw_skill_tags
     from {{ ref('int_jobs_deduplicated') }}
 ),
@@ -78,12 +79,12 @@ from_text as (
     cross join skill_whitelist w
     where
     case
-        when w.skill='r' then regexp_contains(j.full_text, r'(^|[^a-z0-9])r([^a-z0-9]|$)')
-        when w.skill='c++' then regexp_contains(j.full_text, r'(^|[^a-z0-9])c\+\+([^a-z0-9]|$)')
-        when w.skill='c#' then regexp_contains(j.full_text, r'(^|[^a-z0-9])c#([^a-z0-9]|$)')
-        when w.skill='ci/cd' then regexp_contains(j.full_text, r'(^|[^a-z0-9])ci/cd([^a-z0-9]|$)')
-        when w.skill='pl/sql' then regexp_contains(j.full_text, r'(^|[^a-z0-9])pl/sql([^a-z0-9]|$)')
-        else regexp_contains(j.full_text, concat(r'(^|[^a-z0-9])', regexp_replace(w.skill, r'([\\.^$|?*+(){}\[\]])', r'\\\1'), r'([^a-z0-9]|$)'))
+        when w.skill='r' then regexp_contains(j.search_text, r'(^|[^a-z0-9])r([^a-z0-9]|$)')
+        when w.skill='c++' then regexp_contains(j.search_text, r'(^|[^a-z0-9])c\+\+([^a-z0-9]|$)')
+        when w.skill='c#' then regexp_contains(j.search_text, r'(^|[^a-z0-9])c#([^a-z0-9]|$)')
+        when w.skill='ci/cd' then regexp_contains(j.search_text, r'(^|[^a-z0-9])ci/cd([^a-z0-9]|$)')
+        when w.skill='pl/sql' then regexp_contains(j.search_text, r'(^|[^a-z0-9])pl/sql([^a-z0-9]|$)')
+        else regexp_contains(j.search_text, concat(r'(^|[^a-z0-9])', regexp_replace(w.skill, r'([\\.^$|?*+(){}\[\]])', r'\\\1'), r'([^a-z0-9]|$)'))
     end
 ),
 
