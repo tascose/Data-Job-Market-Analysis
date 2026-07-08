@@ -11,7 +11,7 @@ models:
   - name: int_dates_normalized
     description: "Chuẩn hóa các định dạng ngày đăng tuyển khác nhau về kiểu DATE thống nhất"
     columns:
-      - name: posted_date
+      - name: posted_at
         tests:
           - dbt_utils.accepted_range:
               arguments:
