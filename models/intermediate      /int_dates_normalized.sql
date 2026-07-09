@@ -6,9 +6,9 @@ with base as (
 
 select
     job_id,
-    title,
-    company,
-    location,
+    job_title_clean as title,
+    company_name_clean as company,
+    location_clean as location,
     salary,
     -- Ép kiểu từ STRING về DATE ngay tại đây để chiều lòng bài test accepted_range
     coalesce(

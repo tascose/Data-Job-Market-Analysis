@@ -30,9 +30,9 @@ extracted as (
             when regexp_contains(salary_clean, r'thương lượng|negotiate|negotiable|cạnh tranh|competitive|thoả thuận')
                 then null
             when regexp_contains(salary_clean, r'usd|\$')
-                then (select max(cast(regexp_replace(x, r',', '') as float64)) from unnest(regexp_extract_all(salary_clean, r'[\d,]+')) x) * 26000
+                then (select max(cast(regexp_replace(x, r',', '') as float64)) from unnest(regexp_extract_all(salary_clean, r'[\d,\.]+')) x) * 26000
             when regexp_contains(salary_clean, r'triệu|tr\b|million')
-                then (select max(cast(regexp_replace(x, r',', '') as float64)) from unnest(regexp_extract_all(salary_clean, r'[\d,]+')) x) * 1000000
+                then (select max(cast(regexp_replace(x, r',', '') as float64)) from unnest(regexp_extract_all(salary_clean, r'[\d,\.]+')) x) * 1000000
             else null
         end as salary_max_vnd
     from cleaned
