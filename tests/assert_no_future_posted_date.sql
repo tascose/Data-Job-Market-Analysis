@@ -1,3 +1,5 @@
+{{ config(severity = 'warn') }}
+
 select f.job_id, d.posted_at
 from {{ ref('fact_jobs') }} f
 join {{ ref('dim_date') }} d on f.date_key = d.date_key

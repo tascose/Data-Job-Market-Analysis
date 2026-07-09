@@ -1,10 +1,7 @@
 {{ config(materialized='view', schema='intermediate') }}
 
 with base as (
-    select 
-        *,
-        current_timestamp() as _loaded_at
-    from {{ ref('int_jobs_filtered_it') }}
+    select * from {{ ref('int_jobs_filtered_it') }}
 ),
 
 scored as (
