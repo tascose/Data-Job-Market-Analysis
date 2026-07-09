@@ -3,11 +3,11 @@
 with itviec as (
     select 
         job_id,
-        job_title_raw as title,
-        company_name_raw as company,
-        location_raw as location,
+        job_title_raw as job_title_clean,      -- 👈 Đổi tên thành _clean ngay từ gốc
+        company_name_raw as company_name_clean,  -- 👈 Đổi tên thành _clean ngay từ gốc
+        location_raw as location_clean,          -- 👈 Đổi tên thành _clean ngay từ gốc
         salary_raw as salary,
-        cast(posted_date_raw as STRING) as posted_at, -- 👈 Ép về STRING để đồng bộ
+        cast(posted_date_raw as STRING) as posted_at, 
         raw_skill_tags as tags,
         url,
         full_text,
@@ -20,11 +20,11 @@ with itviec as (
 vietnamworks as (
     select 
         job_id,
-        job_title_raw as title,
-        company_name_raw as company,
-        location_raw as location,
+        job_title_raw as job_title_clean,
+        company_name_raw as company_name_clean,
+        location_raw as location_clean,
         salary_raw as salary,
-        cast(posted_date_raw as STRING) as posted_at, -- 👈 Ép về STRING để đồng bộ
+        cast(posted_date_raw as STRING) as posted_at, 
         raw_skill_tags as tags,
         url,
         full_text,
@@ -37,11 +37,11 @@ vietnamworks as (
 careerviet as (
     select 
         job_id,
-        job_title_raw as title,
-        company_name_raw as company,
-        location_raw as location,
+        job_title_raw as job_title_clean,
+        company_name_raw as company_name_clean,
+        location_raw as location_clean,
         salary_raw as salary,
-        cast(posted_date_raw as STRING) as posted_at, -- 👈 Ép về STRING để đồng bộ
+        cast(posted_date_raw as STRING) as posted_at, 
         raw_skill_tags as tags,
         url,
         full_text,
@@ -52,11 +52,11 @@ careerviet as (
 ),
 
 unioned as (
-    select job_id, title, company, location, salary, posted_at, tags, url, full_text, source_platform, _collected_date, _loaded_at from itviec
+    select job_id, job_title_clean, company_name_clean, location_clean, salary, posted_at, tags, url, full_text, source_platform, _collected_date, _loaded_at from itviec
     union all
-    select job_id, title, company, location, salary, posted_at, tags, url, full_text, source_platform, _collected_date, _loaded_at from vietnamworks
+    select job_id, job_title_clean, company_name_clean, location_clean, salary, posted_at, tags, url, full_text, source_platform, _collected_date, _loaded_at from vietnamworks
     union all
-    select job_id, title, company, location, salary, posted_at, tags, url, full_text, source_platform, _collected_date, _loaded_at from careerviet
+    select job_id, job_title_clean, company_name_clean, location_clean, salary, posted_at, tags, url, full_text, source_platform, _collected_date, _loaded_at from careerviet
 )
 
 select * from unioned
